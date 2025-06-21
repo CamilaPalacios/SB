@@ -1,4 +1,4 @@
-package com.systematic.app.biblioteca.dao;
+package com.systematic.app.biblioteca.dao.cargo;
 
 import com.systematic.app.biblioteca.models.Cargo;
 import java.sql.Connection;
@@ -13,6 +13,7 @@ import java.util.Optional;
  *
  * @author anthony
  */
+
 public class CargoDAOImpl implements CargoDAO {
 
     private Connection connection;
@@ -43,7 +44,7 @@ public class CargoDAOImpl implements CargoDAO {
     }
 
     @Override
-    public Optional<Cargo> finByUserId(Integer id) {
+    public Optional<Cargo> findById(Integer id) {
         String sql = "SELECT * FROM cargo WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -122,6 +123,21 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    @Override
+    public int totalRegistros() {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM cargo";
+        try(PreparedStatement ps = connection.prepareStatement(sql)){
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                total = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return total;
     }
 
 }

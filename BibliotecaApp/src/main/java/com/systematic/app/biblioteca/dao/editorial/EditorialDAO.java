@@ -1,6 +1,7 @@
 
-package com.systematic.app.biblioteca.dao;
+package com.systematic.app.biblioteca.dao.editorial;
 
+import com.systematic.app.biblioteca.dao.CRUD;
 import com.systematic.app.biblioteca.models.Editorial;
 import java.util.Optional;
 

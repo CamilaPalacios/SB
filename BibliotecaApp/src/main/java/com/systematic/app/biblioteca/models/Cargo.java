@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.systematic.app.biblioteca.models;
 
 /**
@@ -9,6 +6,7 @@ package com.systematic.app.biblioteca.models;
  * @author anthony
  */
 public class Cargo {
+    
     private Integer id;
     private String nombreCargo;
 
@@ -45,6 +43,5 @@ public class Cargo {
         sb.append('}');
         return sb.toString();
     }
-    
     
 }

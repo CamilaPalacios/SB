@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface CargoService {
     Optional<Cargo> findByNameCargo(String nombreCargo);
-    Optional<Cargo> findByUserId(Integer id);
+    Optional<Cargo> findById(Integer id);
     List<Cargo> findAll();
     void insertCargo(Cargo cargo);
     void updateCargo(Cargo cargo);

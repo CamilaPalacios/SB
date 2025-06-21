@@ -1,7 +1,7 @@
 
 package com.systematic.app.biblioteca.services;
 
-import com.systematic.app.biblioteca.dao.CargoDAO;
+import com.systematic.app.biblioteca.dao.cargo.CargoDAO;
 import com.systematic.app.biblioteca.models.Cargo;
 import java.sql.Connection;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Optional;
  *
  * @author anthony
  */
+
 public class CargoServiceImpl implements CargoService{
     
     private CargoDAO cargoDAO;
@@ -29,8 +30,8 @@ public class CargoServiceImpl implements CargoService{
     }
 
     @Override
-    public Optional<Cargo> findByUserId(Integer id) {
-       return cargoDAO.finByUserId(id);
+    public Optional<Cargo> findById(Integer id) {
+       return cargoDAO.findById(id);
     }
 
     @Override
