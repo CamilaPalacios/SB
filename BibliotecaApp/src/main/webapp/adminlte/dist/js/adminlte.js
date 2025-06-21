@@ -1855,7 +1855,7 @@
           $preloader.css('height', 0);
           setTimeout(function () {
             $preloader.children().hide();
-          }, 200);
+          }, 2000);
         }
       }, this._config.preloadDuration);
     };

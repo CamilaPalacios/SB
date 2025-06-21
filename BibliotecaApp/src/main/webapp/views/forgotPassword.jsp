@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>LOGIN</title>
+        <title>Recuperar Contraseña</title>
 
         <!-- Fuentes Google -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -19,57 +19,34 @@
     </head>
     <body class="hold-transition login-page">
         <div class="login-box">
-            <!-- /.login-logo -->
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
                     <a href="../../index2.html" class="h1"><b>Sistema</b>Biblioteca</a>
                 </div>
                 <div class="card-body">
-                    <p class="login-box-msg">Ingresa tu Usuario y Contraseña para Iniciar Sesión</p>
-
-                    <form action="views/index.jsp" method="post">
+                    <p class="login-box-msg">¿Olvidastes tu Contraseña? Aqui puedes recuperar tu Contraseña fácilmente.</p>
+                    <form action="recover-password.html" method="post">
                         <div class="input-group mb-3">
-                            <input type="text" name="txtNickName" class="form-control" placeholder="Usuario">
+                            <input type="email" class="form-control" placeholder="Email">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="password" name="txtPassword" class="form-control" placeholder="Password">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
-                            <div class="col-8">
-                                <div class="icheck-primary">
-                                    <input type="checkbox" id="remember">
-                                    <label for="remember">
-                                        Recuerdame
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-block">Recuperar Contraseña</button>
                             </div>
                             <!-- /.col -->
                         </div>
                     </form>
-                    <p class="mb-1">
-                        <a href="views/forgotPassword.jsp">Olvidé mi Contraseña</a>
-                    </p>
-                    <p class="mb-0">
-                        <a href="views/registerUser.jsp" class="text-center">Registrar un Nuevo Usuario</a>
+                    <p class="mt-3 mb-1">
+                        <a href="../login.jsp">Login</a>
                     </p>
                 </div>
-                <!-- /.card-body -->
+                <!-- /.login-card-body -->
             </div>
-            <!-- /.card -->
         </div>
         <!-- /.login-box -->
 
