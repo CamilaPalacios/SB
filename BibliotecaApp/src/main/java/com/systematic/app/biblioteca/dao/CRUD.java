@@ -23,17 +23,17 @@ public interface CRUD<T> {
      /**
      * Inserta una nueva entidad.
      */
-    void insertar(T t);
+    int insertar(T t);
     
     /**
      * Actualiza una entidad existente.
      */
-    void actualizar(T t);
+    int actualizar(T t);
     
     /**
      * Elimina una entidad por su ID.
      */
-    void eliminar(Integer id);
+    int eliminar(Integer id);
     
     /**
      * Devuelve la cantidad total de registros.

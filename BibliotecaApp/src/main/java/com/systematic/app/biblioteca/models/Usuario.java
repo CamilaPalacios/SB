@@ -1,4 +1,3 @@
-
 package com.systematic.app.biblioteca.models;
 
 /**
@@ -7,28 +6,28 @@ package com.systematic.app.biblioteca.models;
  */
 
 public class Usuario {
-    
+
     private Integer idUsuario;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String telefonoCelular;
     private String email;
-    private String nickNAme;
+    private String nickName;
     private String password;
     private Cargo cargo;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefonoCelular, String email, String nickNAme, String password, Cargo cargo) {
+    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefonoCelular, String email, String nickName, String password, Cargo cargo) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefonoCelular = telefonoCelular;
         this.email = email;
-        this.nickNAme = nickNAme;
+        this.nickName = nickName;
         this.password = password;
         this.cargo = cargo;
     }
@@ -81,14 +80,6 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getNickNAme() {
-        return nickNAme;
-    }
-
-    public void setNickNAme(String nickNAme) {
-        this.nickNAme = nickNAme;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -105,6 +96,14 @@ public class Usuario {
         this.cargo = cargo;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -115,7 +114,7 @@ public class Usuario {
         sb.append(", apellidoMaterno=").append(apellidoMaterno);
         sb.append(", telefonoCelular=").append(telefonoCelular);
         sb.append(", email=").append(email);
-        sb.append(", nickNAme=").append(nickNAme);
+        sb.append(", nickNAme=").append(nickName);
         sb.append(", password=").append(password);
         sb.append(", cargo=").append(cargo);
         sb.append('}');

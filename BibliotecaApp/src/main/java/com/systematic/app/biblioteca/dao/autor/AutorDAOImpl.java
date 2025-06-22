@@ -82,45 +82,39 @@ public class AutorDAOImpl implements AutorDAO {
     }
 
     @Override
-    public void insertar(Autor autor) {
+    public int insertar(Autor autor) {
         String sql = "INSERT INTO autor(nombreAutor) values (?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autor.getNombreAutor());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Insertar el Autor");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void actualizar(Autor autor) {
+    public int actualizar(Autor autor) {
         String sql = "UPDATE autor SET nombreAutor=? WHERE idAutor=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autor.getNombreAutor());
             ps.setInt(2, autor.getIdAutor());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Actualizar el Autor");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public int eliminar(Integer id) {
         String sql = "DELETE FROM autor WHERE idAutor=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Eliminar el Autor");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 

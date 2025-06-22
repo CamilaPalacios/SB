@@ -1,5 +1,5 @@
 
-package com.systematic.app.biblioteca.services;
+package com.systematic.app.biblioteca.services.cargo;
 
 import com.systematic.app.biblioteca.models.Cargo;
 import java.util.List;

@@ -17,7 +17,7 @@
         <!-- Tema principal de AdminLTE -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/adminlte/dist/css/adminlte.min.css">
     </head>
-    <body class="hold-transition login-page">
+    <body class="hold-transition login-page" data-context-path="${pageContext.request.contextPath}">
         <div class="login-box">
             <!-- /.login-logo -->
             <div class="card card-outline card-primary">
@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <p class="login-box-msg">Ingresa tu Usuario y Contraseña para Iniciar Sesión</p>
 
-                    <form action="views/index.jsp" method="post">
+                    <form action="${pageContext.request.contextPath}/login" method="post" id="loginForm">
                         <div class="input-group mb-3">
                             <input type="text" name="txtNickName" class="form-control" placeholder="Usuario">
                             <div class="input-group-append">
@@ -64,7 +64,7 @@
                         <a href="views/forgotPassword.jsp">Olvidé mi Contraseña</a>
                     </p>
                     <p class="mb-0">
-                        <a href="views/registerUser.jsp" class="text-center">Registrar un Nuevo Usuario</a>
+                        <a href="${pageContext.request.contextPath}/usuarios" class="text-center">Registrar un Nuevo Usuario</a>
                     </p>
                 </div>
                 <!-- /.card-body -->
@@ -72,6 +72,27 @@
             <!-- /.card -->
         </div>
         <!-- /.login-box -->
+
+        <!-- Modal de respuesta -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mensaje de Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex align-items-center justify-content-center gap-4" id="modalContent">
+                            <i id="modalIcon" class="fas fa-info-circle fa-2x me-2"></i>
+                            <span id="modalBody" class="fs-5"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery -->
         <script src="${pageContext.request.contextPath}/adminlte/plugins/jquery/jquery.min.js"></script>
@@ -81,5 +102,8 @@
 
         <!-- AdminLTE App -->
         <script src="${pageContext.request.contextPath}/adminlte/dist/js/adminlte.min.js"></script>
+
+        <!-- Tu script de login -->
+        <script src="${pageContext.request.contextPath}/js/login.js"></script>
     </body>
 </html>

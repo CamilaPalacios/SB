@@ -7,23 +7,23 @@ package com.systematic.app.biblioteca.models;
  */
 public class Cargo {
     
-    private Integer id;
+    private Integer idCargo;
     private String nombreCargo;
 
     public Cargo() {
     }
 
     public Cargo(Integer id, String nombreCargo) {
-        this.id = id;
+        this.idCargo = id;
         this.nombreCargo = nombreCargo;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdCargo() {
+        return idCargo;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdCargo(Integer idCargo) {
+        this.idCargo = idCargo;
     }
 
     public String getNombreCargo() {
@@ -38,7 +38,7 @@ public class Cargo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Cargo{");
-        sb.append("id=").append(id);
+        sb.append("idCargo=").append(idCargo);
         sb.append(", nombreCargo=").append(nombreCargo);
         sb.append('}');
         return sb.toString();

@@ -1,5 +1,5 @@
 
-package com.systematic.app.biblioteca.services;
+package com.systematic.app.biblioteca.services.cargo;
 
 import com.systematic.app.biblioteca.dao.cargo.CargoDAO;
 import com.systematic.app.biblioteca.models.Cargo;

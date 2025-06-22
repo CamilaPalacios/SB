@@ -30,7 +30,7 @@ public class CargoDAOImpl implements CargoDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Cargo cargo = new Cargo();
-                    cargo.setId(rs.getInt("id"));
+                    cargo.setIdCargo(rs.getInt("idCargo"));
                     cargo.setNombreCargo(rs.getString("nombreCargo"));
                     return Optional.of(cargo);
                 }
@@ -45,13 +45,13 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public Optional<Cargo> findById(Integer id) {
-        String sql = "SELECT * FROM cargo WHERE id = ?";
+        String sql = "SELECT * FROM cargo WHERE idCargo = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Cargo cargo = new Cargo();
-                    cargo.setId(rs.getInt("id"));
+                    cargo.setIdCargo(rs.getInt("idCargo"));
                     cargo.setNombreCargo(rs.getString("nombreCargo"));
                     return Optional.of(cargo);
                 }
@@ -72,7 +72,7 @@ public class CargoDAOImpl implements CargoDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Cargo cargo = new Cargo();
-                cargo.setId(rs.getInt("id"));
+                cargo.setIdCargo(rs.getInt("idCargo"));
                 cargo.setNombreCargo(rs.getString("nombreCargo"));
                 listaCargos.add(cargo);
             }
@@ -83,45 +83,39 @@ public class CargoDAOImpl implements CargoDAO {
     }
 
     @Override
-    public void insertar(Cargo cargo) {
+    public int insertar(Cargo cargo) {
         String sql = "INSERT INTO cargo(nombreCargo) values (?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, cargo.getNombreCargo());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Insertar el Cargo");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void actualizar(Cargo cargo) {
-        String sql = "UPDATE cargo SET nombreCargo=? WHERE id=?";
+    public int actualizar(Cargo cargo) {
+        String sql = "UPDATE cargo SET nombreCargo=? WHERE idCargo=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, cargo.getNombreCargo());
-            ps.setInt(2, cargo.getId());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Actualizar el Cargo");
-            }
+            ps.setInt(2, cargo.getIdCargo());
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void eliminar(Integer id) {
-        String sql = "DELETE FROM cargo WHERE id=?";
+    public int eliminar(Integer id) {
+        String sql = "DELETE FROM cargo WHERE idCargo=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Eliminar el Cargo");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 

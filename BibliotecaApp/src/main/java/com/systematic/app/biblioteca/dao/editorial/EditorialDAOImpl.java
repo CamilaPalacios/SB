@@ -82,45 +82,39 @@ public class EditorialDAOImpl implements EditorialDAO {
     }
 
     @Override
-    public void insertar(Editorial editorial) {
+    public int insertar(Editorial editorial) {
         String sql = "INSERT INTO editorial(nombreEditorial) values (?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, editorial.getNombreEditorial());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Insertar el Editorial");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void actualizar(Editorial editorial) {
+    public int actualizar(Editorial editorial) {
         String sql = "UPDATE editorial SET nombreEditorial=? WHERE idEditorial=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, editorial.getNombreEditorial());
             ps.setInt(2, editorial.getIdEditorial());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Actualizar la Editorial");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public int eliminar(Integer id) {
         String sql = "DELETE FROM editorial WHERE idEditorial=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas == 0) {
-                throw new SQLException("Error al Eliminar la Editorial");
-            }
+            return ps.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
+            return 0;
         }
     }
 
