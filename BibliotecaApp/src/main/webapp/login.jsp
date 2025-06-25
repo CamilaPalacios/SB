@@ -1,3 +1,5 @@
+<jsp:include page="views/modals/modalLogin.jsp" />
+<jsp:include page="views/modals/modalLogoutSuccess.jsp" />
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,7 +19,9 @@
         <!-- Tema principal de AdminLTE -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/adminlte/dist/css/adminlte.min.css">
     </head>
-    <body class="hold-transition login-page" data-context-path="${pageContext.request.contextPath}">
+    <body class="hold-transition login-page"
+          data-context-path="${pageContext.request.contextPath}"
+          data-logout-success="<%= "success".equals(request.getParameter("logout"))%>">
         <div class="login-box">
             <!-- /.login-logo -->
             <div class="card card-outline card-primary">
@@ -73,27 +77,6 @@
         </div>
         <!-- /.login-box -->
 
-        <!-- Modal de respuesta -->
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Mensaje de Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="d-flex align-items-center justify-content-center gap-4" id="modalContent">
-                            <i id="modalIcon" class="fas fa-info-circle fa-2x me-2"></i>
-                            <span id="modalBody" class="fs-5"></span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- jQuery -->
         <script src="${pageContext.request.contextPath}/adminlte/plugins/jquery/jquery.min.js"></script>
 
@@ -105,5 +88,9 @@
 
         <!-- Tu script de login -->
         <script src="${pageContext.request.contextPath}/js/login.js"></script>
+
+        <!--Scripts utilitarios -->
+        <script src="${pageContext.request.contextPath}/js/modalUtils.js"></script>
+
     </body>
 </html>

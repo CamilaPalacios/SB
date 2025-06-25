@@ -14,7 +14,6 @@ import java.util.Optional;
  *
  * @author anthony
  */
-
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     private Connection connection;
@@ -26,7 +25,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public Optional<Usuario> findByNickName(String nickName) {
         String sql = "SELECT u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, "
-                + "u.telefonoCelular, u.email, u.nickname, u.password, "
+                + "u.telefonoCelular, u.email, u.nickname, u.password,u.direccion,u.educacion,"
                 + "c.idCargo, c.nombreCargo "
                 + "FROM usuario u INNER JOIN cargo c ON c.idCargo = u.idCargo WHERE u.nickname = ?";
 
@@ -47,6 +46,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setNickName(rs.getString("nickname"));
                 usuario.setPassword(rs.getString("password"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setEducacion(rs.getString("educacion"));
                 usuario.setCargo(cargo);
 
                 return Optional.of(usuario);
@@ -61,7 +62,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public Optional<Usuario> findByEmail(String email) {
         String sql = "SELECT u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, "
-                + "u.telefonoCelular, u.email, u.nickname, u.password, "
+                + "u.telefonoCelular, u.email, u.nickname, u.password,u.direccion,u.educacion, "
                 + "c.idCargo, c.nombreCargo "
                 + "FROM usuario u INNER JOIN cargo c ON c.idCargo = u.idCargo WHERE u.email = ?";
 
@@ -82,6 +83,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setNickName(rs.getString("nickname"));
                 usuario.setPassword(rs.getString("password"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setEducacion(rs.getString("educacion"));
                 usuario.setCargo(cargo);
 
                 return Optional.of(usuario);
@@ -96,7 +99,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public Optional<Usuario> findById(Integer id) {
         String sql = "SELECT u.idUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, "
-                + "u.telefonoCelular, u.email, u.nickname, u.password, "
+                + "u.telefonoCelular, u.email, u.nickname, u.password,u.direccion,u.educacion "
                 + "c.idCargo, c.nombreCargo "
                 + "FROM usuario u INNER JOIN cargo c ON c.idCargo = u.idCargo WHERE u.idUsuario = ?";
 
@@ -117,6 +120,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setNickName(rs.getString("nickname"));
                 usuario.setPassword(rs.getString("password"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setEducacion(rs.getString("educacion"));
                 usuario.setCargo(cargo);
 
                 return Optional.of(usuario);
@@ -132,7 +137,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     public List<Usuario> obtenerTodos() {
         List<Usuario> listaUsuarios = new ArrayList<>();
         String sql = "select u.idUsuario,u.nombre,u.apellidoPaterno,u.apellidoMaterno,"
-                + "u.telefonoCelular,u.email,u.nickname,u.password,c.idCargo,c.nombreCargo"
+                + "u.telefonoCelular,u.email,u.nickname,u.password,u.direccion,u.educacion,c.idCargo,c.nombreCargo"
                 + "from usuario u inner join cargo c on c.idCargo = u.idCargo";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -152,6 +157,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setEmail("email");
                 usuario.setNickName("nickname");
                 usuario.setPassword("password");
+                usuario.setDireccion("direccion");
+                usuario.setEducacion("educacion");
                 usuario.setCargo(cargo);
 
                 listaUsuarios.add(usuario);
@@ -164,8 +171,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public int insertar(Usuario usuario) {
-        String sql = "INSERT INTO usuario(nombre,apellidoPaterno,apellidoMaterno,telefonoCelular,email,nickname,password,idCargo)"
-                + " values(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO usuario(nombre,apellidoPaterno,apellidoMaterno,telefonoCelular,email,nickname,password,direccion,"
+                + "educacion,idCargo)"
+                + " values(?,?,?,?,?,?,?,?,?,?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellidoPaterno());
@@ -174,10 +182,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             ps.setString(5, usuario.getEmail());
             ps.setString(6, usuario.getNickName());
             ps.setString(7, usuario.getPassword());
-            ps.setInt(8, usuario.getCargo().getIdCargo());
+            ps.setString(8, usuario.getDireccion());
+            ps.setString(9, usuario.getEducacion());
+            ps.setInt(10, usuario.getCargo().getIdCargo());
 
             return ps.executeUpdate();
-  
+
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -187,7 +197,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     @Override
     public int actualizar(Usuario usuario) {
         String sql = "UPDATE usuario SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, telefonoCelular = ?, "
-                + "email = ?, nickname = ?, password = ?, idCargo = ? WHERE idUsuario = ?";
+                + "email = ?, nickname = ?, password = ?, direccion=?,educacion=? ,idCargo = ? WHERE idUsuario = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, usuario.getNombre());
@@ -197,8 +207,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             ps.setString(5, usuario.getEmail());
             ps.setString(6, usuario.getNickName());
             ps.setString(7, usuario.getPassword());
-            ps.setInt(8, usuario.getCargo().getIdCargo());
-            ps.setInt(9, usuario.getIdUsuario());
+            ps.setString(8, usuario.getDireccion());
+            ps.setString(9, usuario.getEducacion());
+            ps.setInt(10, usuario.getCargo().getIdCargo());
+            ps.setInt(11, usuario.getIdUsuario());
 
             return ps.executeUpdate();
 

@@ -16,11 +16,13 @@ public class Usuario {
     private String nickName;
     private String password;
     private Cargo cargo;
+    private String educacion;
+    private String direccion;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefonoCelular, String email, String nickName, String password, Cargo cargo) {
+    public Usuario(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefonoCelular, String email, String nickName, String password, Cargo cargo, String educacion, String direccion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -30,6 +32,8 @@ public class Usuario {
         this.nickName = nickName;
         this.password = password;
         this.cargo = cargo;
+        this.educacion = educacion;
+        this.direccion = direccion;
     }
 
     public Integer getIdUsuario() {
@@ -80,6 +84,14 @@ public class Usuario {
         this.email = email;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -96,12 +108,20 @@ public class Usuario {
         this.cargo = cargo;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getEducacion() {
+        return educacion;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setEducacion(String educacion) {
+        this.educacion = educacion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     @Override
@@ -114,11 +134,15 @@ public class Usuario {
         sb.append(", apellidoMaterno=").append(apellidoMaterno);
         sb.append(", telefonoCelular=").append(telefonoCelular);
         sb.append(", email=").append(email);
-        sb.append(", nickNAme=").append(nickName);
+        sb.append(", nickName=").append(nickName);
         sb.append(", password=").append(password);
         sb.append(", cargo=").append(cargo);
+        sb.append(", educacion=").append(educacion);
+        sb.append(", direccion=").append(direccion);
         sb.append('}');
         return sb.toString();
     }
+
+    
     
 }

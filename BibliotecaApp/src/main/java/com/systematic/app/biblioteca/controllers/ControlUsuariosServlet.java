@@ -28,7 +28,6 @@ public class ControlUsuariosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String accion = req.getParameter("accion");
-        System.out.println("accion => " + accion);
         if (accion == null) {
             accion = "index.jsp";
         }
@@ -47,23 +46,26 @@ public class ControlUsuariosServlet extends HttpServlet {
                     String password = req.getParameter("txtPassword");
                     String repetirPassword = req.getParameter("txtRepetirPassword");
                     Integer idCargo = Integer.parseInt(req.getParameter("idCargo"));
-                    
+
                     Cargo cargo = new Cargo();
-                    cargo.setIdCargo(idCargo);                 
+                    cargo.setIdCargo(idCargo);
                     usuario.setCargo(cargo);
-                    
+
                     if (password.equals(repetirPassword)) {
                         usuario.setPassword(password);
                         int resultado = usuarioService.insertarUsuario(usuario);
-                        System.out.println("resultado => "+resultado);
+                        System.out.println("resultado => " + resultado);
                         if (resultado == 1) {
+                            cargarCargos(req);
                             req.setAttribute("usuarioCreado", true);
                             req.getRequestDispatcher("/views/registerUser.jsp").forward(req, resp);
                         } else {
+                            cargarCargos(req);
                             req.setAttribute("errorCreacion", "No se pudo registrar el usuario");
                             req.getRequestDispatcher("/views/registerUser.jsp").forward(req, resp);
                         }
                     } else {
+                        cargarCargos(req);
                         req.setAttribute("errorPassword", "Las Contraseñas no coinciden");
                         req.getRequestDispatcher("/views/registerUser.jsp").forward(req, resp);
                     }
@@ -79,16 +81,18 @@ public class ControlUsuariosServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            cargarCargos(req);
+            req.getRequestDispatcher("/views/registerUser.jsp").forward(req, resp);
+    }
+
+    private void cargarCargos(HttpServletRequest req) {
         try (Connection connection = DBConnection.getConnection()) {
             CargoDAO cargoDAO = new CargoDAOImpl(connection);
             List<Cargo> cargos = cargoDAO.obtenerTodos();
-            System.out.println("cargos => "+cargos);
             req.setAttribute("cargos", cargos);
-            req.getRequestDispatcher("/views/registerUser.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al cargar cargos.");
         }
     }
-
+    
 }

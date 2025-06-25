@@ -3,7 +3,6 @@ package com.systematic.app.biblioteca.services.cargo;
 
 import com.systematic.app.biblioteca.dao.cargo.CargoDAO;
 import com.systematic.app.biblioteca.models.Cargo;
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +13,10 @@ import java.util.Optional;
 
 public class CargoServiceImpl implements CargoService{
     
-    private CargoDAO cargoDAO;
+    private final CargoDAO cargoDAO;
     
-    private Connection connection;
-
-    public CargoServiceImpl(CargoDAO cargoDAO, Connection connection) {
+    public CargoServiceImpl(CargoDAO cargoDAO) {
         this.cargoDAO = cargoDAO;
-        this.connection = connection;
     }
     
 
