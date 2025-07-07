@@ -1,62 +1,83 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.List"%>
-<%@page import="com.systematic.app.biblioteca.models.CategoriaLibro"%>
-<%
-    List<CategoriaLibro> listaCategorias = (List<CategoriaLibro>) request.getAttribute("categorias");
-    System.out.println("categorias = " + listaCategorias);
-%>
-<div class="container-fluid pt-3">
-    <div class="row">
-        <div class="col-12">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categorías</title>
 
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h3>Categorías de Libros</h3>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <button class="btn btn-primary" id="btnNuevaCategoria">
-                        <i class="fas fa-plus"></i> Nueva Categoría
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <table id="tablaCategorias" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Categoria</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (listaCategorias != null) {
-                                    for (CategoriaLibro categoriaLibro : listaCategorias) {
-                            %>
-                            <tr>
-                                <td><%= categoriaLibro.getIdCategoria()%></td>
-                                <td><%= categoriaLibro.getNombreCategoria()%></td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning btnEditar" data-id="<%= categoriaLibro.getIdCategoria()%>"
-                                            data-nombre="<%=categoriaLibro.getNombreCategoria()%>">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger btnEliminar" data-id="<%= categoriaLibro.getIdCategoria()%>">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <%   }
-                                }%>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+    <!-- Estilos y DataTables -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+</head>
+<body>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Mantenimiento de Categorías</h3>
+        <div class="card-tools">
+            <button id="btnNuevaCategoria" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Categoría</button>
         </div>
+    </div>
+
+    <div class="card-body">
+        <table id="tablaCategorias" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="categoria" items="${categorias}">
+                    <tr>
+                        <td>${categoria.idCategoria}</td>
+                        <td>${categoria.nombreCategoria}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm btnEditarCategoria" data-id="${categoria.idCategoria}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btnEliminarCategoria" data-id="${categoria.idCategoria}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- cargar el script categorias-datatables.js -->
-<script src="${pageContext.request.contextPath}/js/categorias.js"></script>
+<!-- Scripts de DataTables -->
+<script src="${pageContext.request.contextPath}/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/jszip/jszip.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="${pageContext.request.contextPath}/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#tablaCategorias').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-success',
+                    text: '<i class="fas fa-file-excel"></i> Exportar a Excel'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-danger',
+                    text: '<i class="fas fa-file-pdf"></i> Exportar PDF'
+                }
+            ],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            }
+        });
+    });
+</script>
+</body>
+</html>

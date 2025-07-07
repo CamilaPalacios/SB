@@ -1,15 +1,28 @@
-
-package com.systematic.app.biblioteca.dao.cargo;
+package com.systematic.app.biblioteca.dao.libro;
 
 import com.systematic.app.biblioteca.dao.CRUD;
-import com.systematic.app.biblioteca.models.Cargo;
-import java.util.Optional;
+import com.systematic.app.biblioteca.models.Libro;
+import com.systematic.app.biblioteca.models.LibroPopularDTO;
 
-/**
- *
- * @author anthony
- */
+import java.util.List;
 
-public interface CargoDAO extends CRUD<Cargo>{
-    Optional<Cargo> findByNameCargo(String nameCargo);
+public interface LibroDAO extends CRUD<Libro, Integer> {
+
+    List<Libro> buscarPorTitulo(String titulo);
+
+    List<Libro> obtenerLibrosDisponibles();
+
+    boolean reducirStock(Integer idLibro);
+
+    boolean aumentarStock(Integer idLibro);
+
+    int contar();               // Total de libros
+
+    int contarDisponibles();    // Libros con cantidad > 0
+
+    int contarPrestados();      // Libros con préstamos activos
+
+    List<LibroPopularDTO> obtenerLibrosMasPrestados(int limit); // Dashboard
+    
+  
 }

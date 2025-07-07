@@ -1,14 +1,16 @@
-
 package com.systematic.app.biblioteca.dao.autor;
 
-import com.systematic.app.biblioteca.dao.CRUD;
 import com.systematic.app.biblioteca.models.Autor;
+import java.util.List;
 import java.util.Optional;
 
-/**
- *
- * @author anthony
- */
-public interface AutorDAO extends CRUD<Autor>{
-    Optional<Autor> findByNameAutor(String nombreAutor);
+public interface AutorDAO {
+    Autor crearAutor(Autor autor);
+    Optional<Autor> buscarPorId(Integer id);
+    List<Autor> listarTodos();
+    Autor actualizarAutor(Autor autor);
+    void eliminarAutor(Integer id);
+    List<Autor> buscarPorNombre(String nombre);
+    int contar();
+
 }

@@ -1,0 +1,116 @@
+/* === ESTILO LOGIN FUTURISTA VERDE === */
+
+body.login-page {
+    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #d0f0c0;
+}
+
+.login-box {
+    box-shadow: 0 0 30px #00ffb3;
+    animation: pulse-shadow 2s infinite;
+}
+
+@keyframes pulse-shadow {
+    0%, 100% {
+        box-shadow: 0 0 20px #00ffb3;
+    }
+    50% {
+        box-shadow: 0 0 40px #00ffb3;
+    }
+}
+
+.card-outline.card-primary {
+    border-top: 4px solid #00ffb3;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+}
+
+.card-header .h1 {
+    color: #00ffb3;
+    text-shadow: 0 0 5px #00ffb3;
+}
+
+.login-box-msg {
+    color: #aaffcc;
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-control {
+    background-color: #1a1a1a;
+    border: 1px solid #00ffb3;
+    color: #ffffff;
+}
+
+.input-group-text {
+    background-color: #0d0d0d;
+    border: 1px solid #00ffb3;
+    color: #00ffb3;
+}
+
+.btn-primary {
+    background-color: #00ffb3;
+    border-color: #00cc99;
+    color: #000;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #00cc99;
+    border-color: #00b38f;
+    color: #000;
+}
+
+a {
+    color: #66ffcc;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #00ffcc;
+}
+
+/* === ESTILO PARA EL MODAL DE MENSAJE DE LOGIN === */
+
+.modal-content {
+    background-color: #0a0a0a !important; /* Fondo oscuro */
+    color: #00ffb3 !important;           /* Texto verde brillante */
+    border: 2px solid #00ffb3;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #00ffb3;
+}
+
+.modal-header, .modal-body, .modal-footer {
+    background-color: #0a0a0a !important;
+    color: #00ffb3 !important;
+    border: none;
+}
+
+.modal-body .fas, .modal-body .fa, .modal-body .icon {
+    color: #00ffb3 !important; /* Íconos en verde neón */
+    font-size: 24px;
+}
+
+.modal-header .close {
+    color: #00ffb3 !important;
+    text-shadow: 0 0 5px #00ffb3;
+}
+
+.modal-footer .btn {
+    background-color: #00ffb3;
+    color: #000;
+    border: none;
+    font-weight: bold;
+}
+
+.modal-footer .btn:hover {
+    background-color: #00cc99;
+    color: #000;
+}
+body.login-page,
+body.register-page {
+    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #d0f0c0;
+}

@@ -1,136 +1,192 @@
 package com.systematic.app.biblioteca.dao.categorialibro;
 
 import com.systematic.app.biblioteca.models.CategoriaLibro;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- *
- * @author anthony
- */
 public class CategoriaLibroDAOImpl implements CategoriaLibroDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     public CategoriaLibroDAOImpl(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public Optional<CategoriaLibro> findByNameCategoria(String nombreCategoria) {
-        String sql = "SELECT * FROM categorialibro WHERE nombreCategoria = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, nombreCategoria);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    CategoriaLibro categoriaLibro = new CategoriaLibro();
-                    categoriaLibro.setIdCategoria(rs.getInt("idCategoria"));
-                    categoriaLibro.setNombreCategoria(rs.getString("nombreCategoria"));
-                    return Optional.of(categoriaLibro);
-                }
-            } catch (Exception e) {
-                e.getMessage();
-            }
-        } catch (SQLException e) {
-            e.getMessage();
-        }
-        return Optional.empty();
-    }
+    public List<CategoriaLibro> listarTodos() {
+        List<CategoriaLibro> categorias = new ArrayList<>();
+        String sql = "SELECT * FROM categoria_libro";
 
-    @Override
-    public Optional<CategoriaLibro> findById(Integer idCategoria) {
-        String sql = "SELECT * FROM categorialibro WHERE idCategoria = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, idCategoria);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    CategoriaLibro categoriaLibro = new CategoriaLibro();
-                    categoriaLibro.setIdCategoria(rs.getInt("idCategoria"));
-                    categoriaLibro.setNombreCategoria(rs.getString("nombreCategoria"));
-                    return Optional.of(categoriaLibro);
-                }
-            } catch (Exception e) {
-                e.getMessage();
-            }
-        } catch (SQLException e) {
-            e.getMessage();
-        }
-        return Optional.empty();
-    }
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
-    @Override
-    public List<CategoriaLibro> obtenerTodos() {
-        List<CategoriaLibro> listaCategorias = new ArrayList<>();
-        String sql = "SELECT * FROM categorialibro";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                CategoriaLibro categoriaLibro = new CategoriaLibro();
-                categoriaLibro.setIdCategoria(rs.getInt("idCategoria"));
-                categoriaLibro.setNombreCategoria(rs.getString("nombreCategoria"));
-                listaCategorias.add(categoriaLibro);
+                CategoriaLibro categoria = new CategoriaLibro();
+                categoria.setIdCategoria(rs.getInt("idCategoria"));
+                categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+                categorias.add(categoria);
             }
-        } catch (Exception e) {
-            e.getMessage();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al listar categorías", e);
         }
-        return listaCategorias;
+
+        return categorias;
     }
 
     @Override
-    public int insertar(CategoriaLibro categoriaLibro) {
-        String sql = "INSERT INTO categorialibro(nombreCategoria) values (?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, categoriaLibro.getNombreCategoria());
-            return ps.executeUpdate();
-        } catch (Exception e) {
-            e.getMessage();
-            return 0;
-        }
-    }
-
-    @Override
-    public int actualizar(CategoriaLibro categoriaLibro) {
-        String sql = "UPDATE categorialibro SET nombreCategoria=? WHERE idCategoria=?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, categoriaLibro.getNombreCategoria());
-            ps.setInt(2, categoriaLibro.getIdCategoria());
-            return ps.executeUpdate();
-        } catch (Exception e) {
-            e.getMessage();
-            return 0;
-        }
-    }
-
-    @Override
-    public int eliminar(Integer id) {
-        String sql = "DELETE FROM categorialibro WHERE idCategoria=?";
+    public CategoriaLibro obtenerPorId(int id) {
+        String sql = "SELECT * FROM categoria_libro WHERE idCategoria = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
-            return ps.executeUpdate();
-        } catch (Exception e) {
-            e.getMessage();
-            return 0;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    CategoriaLibro categoria = new CategoriaLibro();
+                    categoria.setIdCategoria(rs.getInt("idCategoria"));
+                    categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+                    return categoria;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al obtener categoría por ID", e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean insertar(CategoriaLibro categoria) {
+        String sql = "INSERT INTO categoria_libro (nombreCategoria) VALUES (?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, categoria.getNombreCategoria());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al insertar categoría", e);
         }
     }
 
     @Override
-    public int totalRegistros() {
-        int total = 0;
-        String sql = "SELECT COUNT(*) FROM categorialibro";
+    public boolean actualizar(CategoriaLibro categoria) {
+        String sql = "UPDATE categoria_libro SET nombreCategoria = ? WHERE idCategoria = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
-            }
-        } catch (Exception e) {
-            e.getMessage();
+            ps.setString(1, categoria.getNombreCategoria());
+            ps.setInt(2, categoria.getIdCategoria());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al actualizar categoría", e);
         }
-        return total;
+    }
+
+    @Override
+    public boolean eliminar(int id) {
+        String sql = "DELETE FROM categoria_libro WHERE idCategoria = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al eliminar categoría", e);
+        }
+    }
+
+    @Override
+    public boolean existeCategoria(String nombre) {
+        String sql = "SELECT COUNT(*) FROM categoria_libro WHERE nombreCategoria = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al verificar existencia de categoría", e);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean tieneLibrosAsociados(int id) {
+        String sql = "SELECT COUNT(*) FROM libro WHERE idCategoria = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al verificar si la categoría tiene libros asociados", e);
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<CategoriaLibro> buscarPorNombre(String nombre) {
+        List<CategoriaLibro> categorias = new ArrayList<>();
+        String sql = "SELECT * FROM categoria_libro WHERE nombreCategoria LIKE ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + nombre + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CategoriaLibro categoria = new CategoriaLibro();
+                    categoria.setIdCategoria(rs.getInt("idCategoria"));
+                    categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+                    categorias.add(categoria);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al buscar categorías por nombre", e);
+        }
+
+        return categorias;
+    }
+
+    // ✅ MÉTODO AGREGADO: findById
+    @Override
+    public Optional<CategoriaLibro> findById(int id) {
+        String sql = "SELECT * FROM categoria_libro WHERE idCategoria = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    CategoriaLibro categoria = new CategoriaLibro();
+                    categoria.setIdCategoria(rs.getInt("idCategoria"));
+                    categoria.setNombreCategoria(rs.getString("nombreCategoria"));
+                    return Optional.of(categoria);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al buscar categoría por ID", e);
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public int contar() {
+        String sql = "SELECT COUNT(*) FROM categorias_libros";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al contar categorías", e);
+        }
+        return 0;
     }
 
 }

@@ -1,19 +1,29 @@
 package com.systematic.app.biblioteca.services.usuario;
 
+import com.systematic.app.biblioteca.config.DBConnection;
 import com.systematic.app.biblioteca.dao.usuario.UsuarioDAO;
+import com.systematic.app.biblioteca.dao.usuario.UsuarioDAOImpl;
 import com.systematic.app.biblioteca.models.Usuario;
+
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- *
- * @author anthony
- */
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioDAO usuarioDAO;
 
+    // ✅ Constructor por defecto
+    public UsuarioServiceImpl() {
+        try {
+            Connection conn = DBConnection.getConnection();
+            this.usuarioDAO = new UsuarioDAOImpl(conn);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al inicializar UsuarioServiceImpl", e);
+        }
+    }
 
+    // ✅ Constructor con DAO externo
     public UsuarioServiceImpl(UsuarioDAO usuarioDAO) {
         this.usuarioDAO = usuarioDAO;
     }
@@ -29,43 +39,38 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Optional<Usuario> login(String nickname, String password) {
+        Optional<Usuario> usuarioOpt = usuarioDAO.findByNickName(nickname);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (usuario.getPassword().equals(password)) { // Puedes mejorar usando hash
+                return Optional.of(usuario);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public List<Usuario> findAll() {
         return usuarioDAO.obtenerTodos();
     }
 
     @Override
     public int insertarUsuario(Usuario usuario) {
-        if (usuario.getCargo() == null || usuario.getCargo().getIdCargo()== null) {
-            throw new IllegalArgumentException("El usuario debe tener un cargo válido.");
-        }
         return usuarioDAO.insertar(usuario);
     }
 
     @Override
     public int actualizarUsuario(Usuario usuario) {
-        if (usuario.getCargo() == null || usuario.getCargo().getIdCargo()== null) {
-            throw new IllegalArgumentException("El usuario debe tener un cargo válido.");
+        int filas = usuarioDAO.actualizar(usuario);
+        if (filas == 0) {
+            throw new RuntimeException("No se actualizó el usuario con ID: " + usuario.getIdUsuario());
         }
-        return usuarioDAO.actualizar(usuario);
+        return filas;
     }
 
     @Override
     public void eliminarUsuario(Integer id) {
         usuarioDAO.eliminar(id);
     }
-
-    @Override
-    public Optional<Usuario> login(String nickname, String password) {
-        Optional<Usuario> userOpt = usuarioDAO.findByNickName(nickname);
-
-        if (userOpt.isPresent()) {
-            Usuario user = userOpt.get();
-            if (user.getPassword().equals(password)) {
-                return Optional.of(user);
-            }
-        }
-
-        return Optional.empty();
-    }
-
 }

@@ -2,25 +2,21 @@ package com.systematic.app.biblioteca.services.categorialibro;
 
 import com.systematic.app.biblioteca.dao.categorialibro.CategoriaLibroDAO;
 import com.systematic.app.biblioteca.models.CategoriaLibro;
+
 import java.util.List;
 import java.util.Optional;
 
-/**
- *
- * @author anthony
- */
-
-public class CategoriaLibroServiceImpl implements CategoriaLibroService {
+public class CategorialibroServiceImpl implements CategorialibroService {
 
     private final CategoriaLibroDAO categoriaLibroDAO;
 
-    public CategoriaLibroServiceImpl(CategoriaLibroDAO categoriaLibroDAO) {
+    public CategorialibroServiceImpl(CategoriaLibroDAO categoriaLibroDAO) {
         this.categoriaLibroDAO = categoriaLibroDAO;
     }
 
     @Override
-    public Optional<CategoriaLibro> findByNameCategoria(String nombreCategoria) {
-        return categoriaLibroDAO.findByNameCategoria(nombreCategoria);
+    public List<CategoriaLibro> findAll() {
+        return categoriaLibroDAO.listarTodos();
     }
 
     @Override
@@ -29,8 +25,12 @@ public class CategoriaLibroServiceImpl implements CategoriaLibroService {
     }
 
     @Override
-    public List<CategoriaLibro> findAll() {
-        return categoriaLibroDAO.obtenerTodos();
+    public Optional<CategoriaLibro> findByNameCategoria(String nombreCategoria) {
+        List<CategoriaLibro> categorias = categoriaLibroDAO.buscarPorNombre(nombreCategoria);
+        if (categorias != null && !categorias.isEmpty()) {
+            return Optional.of(categorias.get(0));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -47,5 +47,4 @@ public class CategoriaLibroServiceImpl implements CategoriaLibroService {
     public void eliminarCategoriaLibro(Integer id) {
         categoriaLibroDAO.eliminar(id);
     }
-
 }

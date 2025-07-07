@@ -16,18 +16,19 @@
 
         <!-- Tema principal de AdminLTE -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/adminlte/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
     </head>
     <body class="hold-transition login-page">
         <div class="login-box">
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
-                    <a href="../../index2.html" class="h1"><b>Sistema</b>Biblioteca</a>
+                    <h1 class="h1 text-center"><b>Sistema</b>Biblioteca</h1>
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">¿Olvidastes tu Contraseña? Aqui puedes recuperar tu Contraseña fácilmente.</p>
-                    <form action="recover-password.html" method="post">
+                    <form action="${pageContext.request.contextPath}/recuperar-password" method="post">
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="Email">
+                            <input type="email" name="email" class="form-control" placeholder="Email" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -38,7 +39,6 @@
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary btn-block">Recuperar Contraseña</button>
                             </div>
-                            <!-- /.col -->
                         </div>
                     </form>
                     <p class="mt-3 mb-1">

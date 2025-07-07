@@ -1,267 +1,154 @@
-/*
- * Author: Abdullah A Almsaeed
- * Date: 4 Jan 2014
- * Description:
- *      This is a demo file used only for the main dashboard (index.html)
- **/
-
-/* global moment:false, Chart:false, Sparkline:false */
-
 $(function () {
-  'use strict'
+  'use strict';
 
-  // Make the dashboard widgets sortable Using jquery UI
-  $('.connectedSortable').sortable({
-    placeholder: 'sort-highlight',
-    connectWith: '.connectedSortable',
-    handle: '.card-header, .nav-tabs',
-    forcePlaceholderSize: true,
-    zIndex: 999999
-  })
-  $('.connectedSortable .card-header').css('cursor', 'move')
-
-  // jQuery UI sortable for the todo list
-  $('.todo-list').sortable({
-    placeholder: 'sort-highlight',
-    handle: '.handle',
-    forcePlaceholderSize: true,
-    zIndex: 999999
-  })
-
-  // bootstrap WYSIHTML5 - text editor
-  $('.textarea').summernote()
-
-  $('.daterange').daterangepicker({
-    ranges: {
-      Today: [moment(), moment()],
-      Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  // 1. Animación para las tarjetas de estadísticas
+  $('.small-box').hover(
+    function() {
+      $(this).css('transform', 'translateY(-5px)');
+      $(this).css('box-shadow', '0 10px 20px rgba(0,0,0,.1)');
     },
-    startDate: moment().subtract(29, 'days'),
-    endDate: moment()
-  }, function (start, end) {
-    // eslint-disable-next-line no-alert
-    alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-  })
-
-  /* jQueryKnob */
-  $('.knob').knob()
-
-  // jvectormap data
-  var visitorsData = {
-    US: 398, // USA
-    SA: 400, // Saudi Arabia
-    CA: 1000, // Canada
-    DE: 500, // Germany
-    FR: 760, // France
-    CN: 300, // China
-    AU: 700, // Australia
-    BR: 600, // Brazil
-    IN: 800, // India
-    GB: 320, // Great Britain
-    RU: 3000 // Russia
-  }
-  // World map by jvectormap
-  $('#world-map').vectorMap({
-    map: 'usa_en',
-    backgroundColor: 'transparent',
-    regionStyle: {
-      initial: {
-        fill: 'rgba(255, 255, 255, 0.7)',
-        'fill-opacity': 1,
-        stroke: 'rgba(0,0,0,.2)',
-        'stroke-width': 1,
-        'stroke-opacity': 1
-      }
-    },
-    series: {
-      regions: [{
-        values: visitorsData,
-        scale: ['#ffffff', '#0154ad'],
-        normalizeFunction: 'polynomial'
-      }]
-    },
-    onRegionLabelShow: function (e, el, code) {
-      if (typeof visitorsData[code] !== 'undefined') {
-        el.html(el.html() + ': ' + visitorsData[code] + ' new visitors')
-      }
+    function() {
+      $(this).css('transform', 'translateY(0)');
+      $(this).css('box-shadow', 'none');
     }
-  })
+  );
 
-  // Sparkline charts
-  var sparkline1 = new Sparkline($('#sparkline-1')[0], { width: 80, height: 50, lineColor: '#92c1dc', endColor: '#ebf4f9' })
-  var sparkline2 = new Sparkline($('#sparkline-2')[0], { width: 80, height: 50, lineColor: '#92c1dc', endColor: '#ebf4f9' })
-  var sparkline3 = new Sparkline($('#sparkline-3')[0], { width: 80, height: 50, lineColor: '#92c1dc', endColor: '#ebf4f9' })
-
-  sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
-  sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
-  sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
-
-  // The Calender
-  $('#calendar').datetimepicker({
-    format: 'L',
-    inline: true
-  })
-
-  // SLIMSCROLL FOR CHAT WIDGET
-  $('#chat-box').overlayScrollbars({
-    height: '250px'
-  })
-
-  /* Chart.js Charts */
-  // Sales chart
-  var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
-  // $('#revenue-chart').get(0).getContext('2d');
-
-  var salesChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'Digital Goods',
-        backgroundColor: 'rgba(60,141,188,0.9)',
-        borderColor: 'rgba(60,141,188,0.8)',
-        pointRadius: false,
-        pointColor: '#3b8bba',
-        pointStrokeColor: 'rgba(60,141,188,1)',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
-        data: [28, 48, 40, 19, 86, 27, 90]
+  // 2. Actualización periódica de estadísticas (cada 2 minutos)
+  function actualizarEstadisticas() {
+    $.ajax({
+      url: '${pageContext.request.contextPath}/dashboard/stats',
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        actualizarTarjetas(data);
+        actualizarGraficos(data);
       },
-      {
-        label: 'Electronics',
-        backgroundColor: 'rgba(210, 214, 222, 1)',
-        borderColor: 'rgba(210, 214, 222, 1)',
-        pointRadius: false,
-        pointColor: 'rgba(210, 214, 222, 1)',
-        pointStrokeColor: '#c1c7d1',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(220,220,220,1)',
-        data: [65, 59, 80, 81, 56, 55, 40]
+      error: function(xhr, status, error) {
+        console.error('Error al actualizar estadísticas:', error);
       }
-    ]
+    });
   }
 
-  var salesChartOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          display: false
+  // Actualizar los valores de las tarjetas
+  function actualizarTarjetas(estadisticas) {
+    $('.small-box h3').eq(0).text(estadisticas.totalLibros);
+    $('.small-box h3').eq(1).text(estadisticas.totalUsuarios);
+    $('.small-box h3').eq(2).text(estadisticas.totalPrestamosActivos);
+    $('.small-box h3').eq(3).text(estadisticas.totalCategorias);
+    $('.small-box h3').eq(4).text(estadisticas.totalEditoriales);
+    $('.small-box h3').eq(5).text(estadisticas.totalAutores);
+    $('.small-box h3').eq(6).text(estadisticas.totalCargos);
+  }
+
+  // 3. Gráfico de préstamos por mes
+  function initPrestamosChart() {
+    var ctx = document.getElementById('prestamosChart').getContext('2d');
+    window.prestamosChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        datasets: [{
+          label: 'Préstamos por mes',
+          backgroundColor: 'rgba(60, 141, 188, 0.7)',
+          borderColor: 'rgba(60, 141, 188, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
         }
-      }],
-      yAxes: [{
-        gridLines: {
-          display: false
+      }
+    });
+  }
+
+  // 4. Gráfico de libros más prestados
+  function initLibrosPopularesChart() {
+    var ctx = document.getElementById('librosPopularesChart').getContext('2d');
+    window.librosPopularesChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: [
+            '#f56954', '#00a65a', '#f39c12', 
+            '#00c0ef', '#3c8dbc', '#d2d6de',
+            '#ff851b', '#605ca8', '#d81b60',
+            '#001f3f'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right'
+          }
         }
-      }]
+      }
+    });
+  }
+
+  // Actualizar gráficos con datos del servidor
+  function actualizarGraficos(data) {
+    if (data.prestamosPorMes) {
+      window.prestamosChart.data.datasets[0].data = data.prestamosPorMes;
+      window.prestamosChart.update();
+    }
+    
+    if (data.librosPopulares) {
+      window.librosPopularesChart.data.labels = data.librosPopulares.map(libro => libro.titulo);
+      window.librosPopularesChart.data.datasets[0].data = data.librosPopulares.map(libro => libro.totalPrestamos);
+      window.librosPopularesChart.update();
     }
   }
 
-  // This will get the first returned node in the jQuery collection.
-  // eslint-disable-next-line no-unused-vars
-  var salesChart = new Chart(salesChartCanvas, { // lgtm[js/unused-local-variable]
-    type: 'line',
-    data: salesChartData,
-    options: salesChartOptions
-  })
-
-  // Donut Chart
-  var pieChartCanvas = $('#sales-chart-canvas').get(0).getContext('2d')
-  var pieData = {
-    labels: [
-      'Instore Sales',
-      'Download Sales',
-      'Mail-Order Sales'
-    ],
-    datasets: [
-      {
-        data: [30, 12, 20],
-        backgroundColor: ['#f56954', '#00a65a', '#f39c12']
+  // 5. Inicialización de componentes
+  $(document).ready(function() {
+    // Inicializar gráficos
+    initPrestamosChart();
+    initLibrosPopularesChart();
+    
+    // Cargar datos iniciales
+    actualizarEstadisticas();
+    
+    // Configurar actualización periódica
+    setInterval(actualizarEstadisticas, 120000); // 2 minutos
+    
+    // 6. Tooltips para las tarjetas
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // 7. Notificación de préstamos próximos a vencer
+    $.get('${pageContext.request.contextPath}/dashboard/prestamos-proximos-vencer', function(data) {
+      if (data.length > 0) {
+        var notificacion = $('<div class="alert alert-warning alert-dismissible">')
+          .html('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' +
+                '<h5><i class="icon fas fa-exclamation-triangle"></i> Atención!</h5>' +
+                'Tienes ' + data.length + ' préstamos próximos a vencer.');
+        
+        $('#notifications-container').append(notificacion);
       }
-    ]
-  }
-  var pieOptions = {
-    legend: {
-      display: false
-    },
-    maintainAspectRatio: false,
-    responsive: true
-  }
-  // Create pie or douhnut chart
-  // You can switch between pie and douhnut using the method below.
-  // eslint-disable-next-line no-unused-vars
-  var pieChart = new Chart(pieChartCanvas, { // lgtm[js/unused-local-variable]
-    type: 'doughnut',
-    data: pieData,
-    options: pieOptions
-  })
+    });
+  });
 
-  // Sales graph chart
-  var salesGraphChartCanvas = $('#line-chart').get(0).getContext('2d')
-  // $('#revenue-chart').get(0).getContext('2d');
-
-  var salesGraphChartData = {
-    labels: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4', '2013 Q1', '2013 Q2'],
-    datasets: [
-      {
-        label: 'Digital Goods',
-        fill: false,
-        borderWidth: 2,
-        lineTension: 0,
-        spanGaps: true,
-        borderColor: '#efefef',
-        pointRadius: 3,
-        pointHoverRadius: 7,
-        pointColor: '#efefef',
-        pointBackgroundColor: '#efefef',
-        data: [2666, 2778, 4912, 3767, 6810, 5670, 4820, 15073, 10687, 8432]
-      }
-    ]
-  }
-
-  var salesGraphChartOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-      display: false
-    },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: '#efefef'
-        },
-        gridLines: {
-          display: false,
-          color: '#efefef',
-          drawBorder: false
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          stepSize: 5000,
-          fontColor: '#efefef'
-        },
-        gridLines: {
-          display: true,
-          color: '#efefef',
-          drawBorder: false
-        }
-      }]
-    }
-  }
-
-  // This will get the first returned node in the jQuery collection.
-  // eslint-disable-next-line no-unused-vars
-  var salesGraphChart = new Chart(salesGraphChartCanvas, { // lgtm[js/unused-local-variable]
-    type: 'line',
-    data: salesGraphChartData,
-    options: salesGraphChartOptions
-  })
-})
+  // 8. Manejo de eventos personalizados
+  $(document).on('click', '.refresh-stats', function() {
+    var btn = $(this);
+    btn.prop('disabled', true).html('<i class="fas fa-sync-alt fa-spin"></i> Actualizando...');
+    
+    actualizarEstadisticas();
+    
+    setTimeout(function() {
+      btn.prop('disabled', false).html('<i class="fas fa-sync-alt"></i> Actualizar');
+    }, 2000);
+  });
+});

@@ -1,15 +1,25 @@
+package com.systematic.app.biblioteca.dao.prestamo;
 
-package com.systematic.app.biblioteca.dao.cargo;
+import com.systematic.app.biblioteca.models.Prestamo;
+import com.systematic.app.biblioteca.models.PrestamosPorMesDTO;
 
-import com.systematic.app.biblioteca.dao.CRUD;
-import com.systematic.app.biblioteca.models.Cargo;
-import java.util.Optional;
+import java.util.List;
 
-/**
- *
- * @author anthony
- */
+public interface PrestamoDAO {
+    List<Prestamo> listarTodos();
+    List<Prestamo> listarActivos();
+    Prestamo buscarPorId(Integer id);
+    Prestamo crear(Prestamo prestamo);
+    Prestamo actualizar(Prestamo prestamo);
+    void eliminar(Integer id);
+    void registrarDevolucion(Integer idPrestamo);
+    List<Prestamo> buscarPorUsuario(Integer idUsuario);
+    List<Prestamo> buscarPorLibro(Integer idLibro);
+    List<Prestamo> listarVencidos();
+    int contarPrestamosActivos();
+    List<PrestamosPorMesDTO> contarPrestamosPorMes();
+    List<Prestamo> obtenerProximosAVencer(int dias);
+    int contarPrestamosVencidos();
+    List<Prestamo> obtenerPrestamosRecientes(int limit);
 
-public interface CargoDAO extends CRUD<Cargo>{
-    Optional<Cargo> findByNameCargo(String nameCargo);
 }

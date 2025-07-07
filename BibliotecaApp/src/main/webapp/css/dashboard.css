@@ -1,0 +1,24 @@
+/* dashboard.css */
+
+/* Reduce el espacio entre filas de tarjetas */
+.row.g-2 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    row-gap: 0.5rem;
+}
+
+/* Opcional: reduce padding si tu .container-fluid lo tiene excesivo */
+.container-fluid {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Reduce espacio debajo del encabezado */
+.content-header {
+    margin-bottom: 10px !important;
+}
+
+/* Reduce separación entre tarjetas y secciones inferiores */
+.mt-4 {
+    margin-top: 1rem !important;
+}

@@ -1,13 +1,17 @@
-
 package com.systematic.app.biblioteca.models;
 
-/**
- *
- * @author anthony
- */
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "editorial")
 public class Editorial {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEditorial")
     private Integer idEditorial;
+
+    @Column(name = "nombreEditorial")
     private String nombreEditorial;
 
     public Editorial() {
@@ -36,12 +40,9 @@ public class Editorial {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Editorial{");
-        sb.append("idEditorial=").append(idEditorial);
-        sb.append(", nombreEditorial=").append(nombreEditorial);
-        sb.append('}');
-        return sb.toString();
+        return "Editorial{" +
+                "idEditorial=" + idEditorial +
+                ", nombreEditorial='" + nombreEditorial + '\'' +
+                '}';
     }
-    
 }

@@ -1,10 +1,11 @@
 package com.systematic.app.biblioteca.models;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author anthony
  */
-
 public class Usuario {
 
     private Integer idUsuario;
@@ -18,6 +19,8 @@ public class Usuario {
     private Cargo cargo;
     private String educacion;
     private String direccion;
+    private String tokenRecuperacion;
+    private LocalDateTime tokenExpiracion;
 
     public Usuario() {
     }
@@ -124,6 +127,22 @@ public class Usuario {
         this.direccion = direccion;
     }
 
+    public String getTokenRecuperacion() {
+        return tokenRecuperacion;
+    }
+
+    public void setTokenRecuperacion(String tokenRecuperacion) {
+        this.tokenRecuperacion = tokenRecuperacion;
+    }
+
+    public LocalDateTime getTokenExpiracion() {
+        return tokenExpiracion;
+    }
+
+    public void setTokenExpiracion(LocalDateTime tokenExpiracion) {
+        this.tokenExpiracion = tokenExpiracion;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -139,10 +158,11 @@ public class Usuario {
         sb.append(", cargo=").append(cargo);
         sb.append(", educacion=").append(educacion);
         sb.append(", direccion=").append(direccion);
+        sb.append(", tokenRecuperacion=").append(tokenRecuperacion);
+        sb.append(", tokenExpiracion=").append(tokenExpiracion);
+
         sb.append('}');
         return sb.toString();
     }
 
-    
-    
 }
